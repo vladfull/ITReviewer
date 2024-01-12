@@ -14,7 +14,7 @@ namespace ITReviewerWeb.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-			var objCompanyList = _unitOfWork.Company.GetAll().ToList();
+			var objCompanyList = _unitOfWork.Company.GetAll().Result.ToList();
 			return View(objCompanyList);
         }
 
@@ -45,7 +45,7 @@ namespace ITReviewerWeb.Areas.Admin.Controllers
 			{
 				return NotFound();
 			}
-			Company? companyFromDB = _unitOfWork.Company.Get(u => u.Id == id);
+			Company? companyFromDB = _unitOfWork.Company.Get(u => u.Id == id).Result;
 			if (companyFromDB == null)
 			{
 				return NotFound();
@@ -72,7 +72,7 @@ namespace ITReviewerWeb.Areas.Admin.Controllers
 			{
 				return NotFound();
 			}
-			Company? companyFromDB = _unitOfWork.Company.Get(u => u.Id == id);
+			Company? companyFromDB = _unitOfWork.Company.Get(u => u.Id == id).Result;
 			if (companyFromDB == null)
 			{
 				return NotFound();
@@ -84,7 +84,7 @@ namespace ITReviewerWeb.Areas.Admin.Controllers
 		[ActionName("Delete")]
 		public IActionResult DeletePOST(int? id)
 		{
-			Company? obj = _unitOfWork.Company.Get(u => u.Id == id);
+			Company? obj = _unitOfWork.Company.Get(u => u.Id == id).Result;
 			if (obj == null)
 			{
 				return NotFound();

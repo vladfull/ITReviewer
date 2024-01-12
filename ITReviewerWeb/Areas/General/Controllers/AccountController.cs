@@ -64,7 +64,7 @@ namespace ITReviewerWeb.Areas.General.Controllers
 		{
 			if(ModelState.IsValid)
 			{
-				var userFromDB = _unitOfWork.Account.Get(u => u.Name == obj.Name);
+				var userFromDB = _unitOfWork.Account.Get(u => u.Name == obj.Name).Result;
 				if (userFromDB == null)
 				{
 					ModelState.AddModelError("Name", "Даного логіна не знайдено");

@@ -20,12 +20,12 @@ namespace ITReviewerWeb.Areas.General.Controllers
 		{
 			if(searchName == null) 
 			{
-                var objCompanyList = _unitOfWork.Company.GetAll().ToList();
+                var objCompanyList = _unitOfWork.Company.GetAll().Result.ToList();
                 return View(objCompanyList);
             }
 			else
 			{
-				var objSearched = _unitOfWork.Company.GetRange(u => u.Name.Contains(searchName)).ToList();
+				var objSearched = _unitOfWork.Company.GetRange(u => u.Name.Contains(searchName)).Result.ToList();
 				return View(objSearched);
 			}
 		}

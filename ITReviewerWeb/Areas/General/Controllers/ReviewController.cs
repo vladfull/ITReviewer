@@ -21,7 +21,7 @@ namespace ITReviewerWeb.Areas.General.Controllers
             {
                 return NotFound();
             }
-            var compFromDB = _unitOfWork.Company.Get(u => u.Id == id);
+            var compFromDB = _unitOfWork.Company.Get(u => u.Id == id).Result;
 
             if (compFromDB == null) 
             {
@@ -52,7 +52,7 @@ namespace ITReviewerWeb.Areas.General.Controllers
 				obj.UserId = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst("Id")?.Value);
                 _unitOfWork.Review.Add(obj);
                 _unitOfWork.Save();
-                var companyFromDB = _unitOfWork.Company.Get(u => u.Id == obj.CompanyId);
+                var companyFromDB = _unitOfWork.Company.Get(u => u.Id == obj.CompanyId).Result;
                 companyFromDB.Rating = _unitOfWork.Company.CalculateRate(companyFromDB.Id);
                 _unitOfWork.Company.Update(companyFromDB);
                 _unitOfWork.Save();
@@ -71,14 +71,14 @@ namespace ITReviewerWeb.Areas.General.Controllers
         [HttpPost]
         public IActionResult Delete(int? id)
         {
-            Review? obj = _unitOfWork.Review.Get(u => u.Id == id);
+            Review? obj = _unitOfWork.Review.Get(u => u.Id == id).Result;
             if (obj == null)
             {
                 return NotFound();
             }
             _unitOfWork.Review.Remove(obj);
             _unitOfWork.Save();
-            var companyFromDB = _unitOfWork.Company.Get(u => u.Id == obj.CompanyId);        //
+            var companyFromDB = _unitOfWork.Company.Get(u => u.Id == obj.CompanyId).Result;        
             companyFromDB.Rating = _unitOfWork.Company.CalculateRate(companyFromDB.Id);
             _unitOfWork.Company.Update(companyFromDB);
             _unitOfWork.Save();

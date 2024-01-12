@@ -17,8 +17,8 @@ namespace ITReviewerWeb.Controllers
 
         public IActionResult Index(int? pageNumber)
         {
-            User userFromDB = _unitOfWork.Account.Get(u => u.Name == User.Identity.Name);
-            var reviewsFromDB = _unitOfWork.Review.GetRange(u => u.UserId == userFromDB.Id).OrderByDescending(u => u.RegDate).ToList();
+            User userFromDB = _unitOfWork.Account.Get(u => u.Name == User.Identity.Name).Result;
+            var reviewsFromDB = _unitOfWork.Review.GetRange(u => u.UserId == userFromDB.Id).Result.OrderByDescending(u => u.RegDate).ToList();
             int pageSize = 5;
             var pagReviews = PaginatedList<Review>.Create(reviewsFromDB, pageNumber ?? 1, pageSize);
 			Profile_IndexVM obj = new Profile_IndexVM
@@ -37,7 +37,7 @@ namespace ITReviewerWeb.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var userFromDB = _unitOfWork.Account.Get(u => u.Id.ToString() == User.FindFirst("Id").Value);
+                var userFromDB = _unitOfWork.Account.Get(u => u.Id.ToString() == User.FindFirst("Id").Value).Result;
                 Profile_EditVM obj = new Profile_EditVM
                 {
                     Bio = userFromDB.Bio,
@@ -52,7 +52,7 @@ namespace ITReviewerWeb.Controllers
         {
             if(ModelState.IsValid) 
             {
-                User userFromDB = _unitOfWork.Account.Get(u => u.Name == User.Identity.Name);
+                User userFromDB = _unitOfWork.Account.Get(u => u.Name == User.Identity.Name).Result;
                 if(obj.ImageFile != null)
                 {
 					if (userFromDB.ImagePath != null)

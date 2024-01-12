@@ -22,12 +22,12 @@ namespace ITReviewer.Libraries.DataAccess.Repository
 			
 		}
 
-		public void Add(T entity)
+		async public Task Add(T entity)
 		{
-			DbSet.Add(entity);
+			await DbSet.AddAsync(entity);
 		}
 
-		public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+		async public Task<T> Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
 		{
 			IQueryable<T> query = DbSet;
 			query = query.Where(filter);
@@ -38,10 +38,10 @@ namespace ITReviewer.Libraries.DataAccess.Repository
 					query = query.Include(property);
 				}
 			}
-			return query.FirstOrDefault();
+			return await query.FirstOrDefaultAsync();
 		}
 
-		public IEnumerable<T> GetAll(string? includeProperties = null)
+		async public Task<IEnumerable<T>> GetAll(string? includeProperties = null)
 		{
 			IQueryable<T> query = DbSet;
 			if (!string.IsNullOrEmpty(includeProperties))
@@ -51,9 +51,9 @@ namespace ITReviewer.Libraries.DataAccess.Repository
 					query = query.Include(property);
 				}
 			}
-			return query.ToList();
+			return await query.ToListAsync();
 		}
-		public IEnumerable<T> GetRange(Expression<Func<T, bool>> filter, string? includeProperties = null)
+		async public Task<IEnumerable<T>> GetRange(Expression<Func<T, bool>> filter, string? includeProperties = null)
 		{
 			IQueryable<T> query = DbSet;
 			query = query.Where(filter);
@@ -64,7 +64,7 @@ namespace ITReviewer.Libraries.DataAccess.Repository
                     query = query.Include(property);
                 }
             }
-			return query.ToList();
+			return await query.ToListAsync();
         }
 		
 
