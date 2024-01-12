@@ -1,0 +1,49 @@
+﻿@model Profile_EditVM
+<div class="d-flex justify-content-center">
+
+<div class="card shadow border-0 mt-4" style="width:75%;">
+	<div class="card-header bg-primary bg-gradient ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white">Редагувати Профіль</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<form method="post" class="row" enctype="multipart/form-data">
+	<div class=" mt-4 col-10 row">
+					@*<div asp-validation-summary="All"></div>*@
+		<div class="form-floating py-2 col-12">
+				<input asp-for="Bio" class="form-control border-0 shadow"/>
+				<label asp-for="Bio" class="ms-2"></label>
+				<span asp-validation-for="Bio" class="text-danger"></span>
+		</div>
+		<div>
+
+			<div class="form-floating py-2 col-12">
+				<input type="file" name="ImageFile" class="form-control border-0 shadow" 
+				onchange="document.getElementById('previewImg').src = window.URL.createObjectURL(this.files[0])"/>
+				<label asp-for="ImageFile" class="ms-2"></label>
+				<span asp-validation-for="ImageFile" class="text-danger"></span>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+		<a asp-controller="Profile" asp-action="Index" class="btn btn-secondary" style="width:150px">Back To Profile</a>
+	</div>
+	<div class="mt-4 col-2 d-flex justify-content-center ">
+					@*<h4 >Фото профілю:</h4>*@
+		<img id="previewImg" src="/Uploads/@Model.ImagePath" style="border: 2px solid; border-color:black; width: 150px; height:150px" title="150x150"/>
+	</div>
+</form>
+	</div>
+</div>
+
+</div>
+
+
+
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial"/>
+	}
+}

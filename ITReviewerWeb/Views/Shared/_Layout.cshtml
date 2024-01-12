@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ITReviewerWeb</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
+    <link rel="stylesheet" href="~/css/spacelab.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ITReviewerWeb.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-toggleable-sm bg-light border-bottom box-shadow mb-3" data-bs-theme="light">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="General" asp-controller="Home" asp-action="Index">ITReviewer</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" 
+                    aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarColor03">
+                    <ul class="navbar-nav flex-grow-1 me-auto">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link " asp-area="General" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav me-auto" style="text-align:right">
+                            @*<li class="nav-item ">
+                                 <a class="nav-link " asp-controller="Profile" asp-action="Index">@User.Identity.Name</a>          
+                            </li>     *@
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name</a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" asp-area="General" asp-controller="Profile" asp-action="Index">Профіль</a>
+                                    
+                                    <div class="dropdown-divider"></div>
+                                    
+                                    <a class="dropdown-item text-danger" asp-controller="Account" asp-action="LogOut">Вийти</a>
+                                </div>
+                            </li>
+                        </ul>
+                        
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav me-auto" style="text-align:right">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Зареєструватись</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Увійти</a>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </nav>
+        
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - ITReviewerWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.tiny.cloud/1/yh993frtiaxf1jf7zx6xhdzete289iiak423h64wzaclhjk2/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

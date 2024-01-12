@@ -1,0 +1,183 @@
+﻿@using System.Security.Claims
+@model Profile_IndexVM
+@*https://avatarfiles.alphacoders.com/350/350361.jpg*@
+
+<div class="container mt-1 d-flex justify-content-center " >
+      <div class="m-1 d-flex col-md-4" style="flex-direction:column">
+                <div class="card  p-0 mb-3 d-inline-block">
+           <div class="card-header bg-dark bg-gradient ml-0 py-3">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2 class="text-white">Ваш Профіль</h2>
+                    </div>
+                </div>
+           </div>
+           <div class="card-body">
+           <div class="d-flex align-items-center">
+                    @if (Model.ImagePath == null)
+                    {
+                       <div class="image m-1 border-dark" style=" border: 3px solid;">
+                           <img src="/default_avatar.png" class="rounded" width="155">             
+                       </div>
+                    }
+                    else
+                    {
+                       <div class="image m-1 border-dark" style=" border: 3px solid;">
+                                   <img src="\Uploads\@Model.ImagePath" width="155" height="155"
+                               style="overflow:hidden"/>             
+                       </div>
+                    }
+
+               <div class="ml-3 w-100 ">
+
+                   <h4 class="mb-0 mt-0 ">
+                            @Model.Name
+                            @if (Model.Role != "User")
+                            {
+                                     <sup><span class=" bg-gradient text-white p-1 m-1" style="border-radius: 5px; font-size: 12px; background-color: goldenrod">@Model.Role</span></sup>
+                            }     
+                   </h4>
+                   <div class="text-secondary">Member since @Model.RegDate</div>
+                        @if (Model.Bio != null)
+                        {
+                                <span class="text-dark">@Model.Bio</span> 
+                        }
+                        else
+                        {
+                                <span class="text-secondary">No Bio yet</span> @*TODO User`s Bio*@
+                        }
+
+                   <div class="button mt-2 d-flex flex-row align-items-center " >
+
+                    <a asp-controller="Profile" asp-action="Edit" class="btn btn-outline-primary border form-control" style="width:100px">Edit</a>
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-danger border form-control " style="width:100px">Log Out</a>
+
+                   </div>
+               </div>
+           </div>
+           </div>
+      </div>
+            @if (Model.Role == "Admin")
+            {
+                <div class="card p-0 mb-3 d-inline-block">
+                    <div class="card-header bg-warning bg-gradient ml-0 py-3">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2 class="text-white">Admin-Панель</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table ">
+                            <tbody>
+                                <tr>
+                                    <td style="width:50%">
+                                        <a asp-area="Admin" asp-controller="Company" asp-action="Index" class="btn btn-light border form-control">Koмпанії</a>
+                                    </td>
+                                    <td>
+                                        <a asp-area="Admin" asp-controller="BlockedUsers" asp-action="index" class="btn btn-danger border form-control">Чорний Список</a>
+                                    </td>  
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+            }
+      </div>
+
+      <div class="d-flex m-1 col-md-8" style="flex-direction:column">
+            <div class="card p-0 mb-3 d-inline-block">
+                <div class="card-header bg-dark bg-gradient ml-0 py-3">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h2 class="text-white">Нещодавні Відгуки</h2>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" style="height:100%">
+                    @foreach(var review in Model.Reviews)
+                    {
+                        <a id="linkRev" class="text-dark" asp-area="General" asp-controller="Review" asp-action="Index" asp-route-id="@review.CompanyId">
+                            @*<div id="rev" class="m-0 p-0">*@
+                                <div id="rev" class="d-flex m-2 p-2 border border-2 border-secondary bg-gradient bg-light bg-opacity-50">
+                                    <div class="image m-1 border-dark" style=" border: 3px solid; position:relative; height:63px">
+				                        <img src="\Uploads\@review.User.ImagePath" width="60" height="60">
+			                        </div>
+			                        <div class="col-md-10">
+				                        <h4 class="d-flex align-items-center mb-0 mt-0" style="font-size:18px">
+                                            @review.User.Name
+                                            @if(review.User.Role.ToString() != "User")
+                                            {
+                                                <sup><span class=" bg-gradient text-white m-1 mb-0 mt-0" style="border-radius: 5px; font-size: 10px; background-color: goldenrod; position:relative; top:5px; padding:3px">
+									            @review.User.Role.ToString()</span></sup>
+                                            }    
+						                    <span class="text-secondary" style="font-size:16px">@review.RegDate.ToString().Substring(0,10)</span>
+                                        </h4>
+				                        <div>Оцінка: @review.Rate <span style="font-size: 20px; color:gold">★</span></div>
+				                        <div class="m-0 p-0 text-dark">@Html.Raw(review.ReviewDesc)</div>
+				
+			                        </div>
+                                </div>
+                            @*</div>*@
+                        </a>
+                    }
+                    <div class="paginateButtons d-flex justify-content-center">
+                    @{
+                        var prevDisabled = !Model.Reviews.HasPreviousPage ? "disabled" : "";
+                        var nextDisabled = !Model.Reviews.HasNextPage ? "disabled" : "";
+
+                        <a asp-action="Index" asp-route-pageNumber="@(Model.Reviews.PageIndex-1)" class="btn btn-outline-dark m-1 @prevDisabled"><i class="bi bi-arrow-left-short"></i></a>
+
+                        var maxPageNumbers = 5; // Максимальна кількість номерів сторінок, яку ви хочете відобразити
+
+                        var startPage = Math.Max(Model.Reviews.PageIndex - maxPageNumbers / 2, 1);
+                        var endPage = Math.Min(startPage + maxPageNumbers - 1, Model.Reviews.TotalPages);
+
+                        if (startPage > 1)
+                        {
+                            <a asp-action="Index" asp-route-pageNumber="1" class="btn btn-outline-dark m-1">1</a>
+                            if (startPage > 2)
+                            {
+                                <a asp-action="Index" asp-route-pageNumber="@(Model.Reviews.PageIndex-maxPageNumbers)" class="btn btn-outline-dark m-1"><i class="bi bi-three-dots"></i></a>
+                            }
+                        }
+
+                        for (var i = startPage; i <= endPage; i++)
+                        {
+                            var isActive = (i == Model.Reviews.PageIndex) ? "active" : "";
+                            <a asp-action="Index" asp-route-pageNumber="@i" class="btn btn-outline-dark m-1 @isActive ">@i</a>
+                        }
+
+                        if (endPage < Model.Reviews.TotalPages)
+                        {
+                            if (endPage < Model.Reviews.TotalPages - 1)
+                            {
+                                <a asp-action="Index" asp-route-pageNumber="@(Model.Reviews.PageIndex+maxPageNumbers)" class="btn btn-outline-dark m-1"><i class="bi bi-three-dots"></i></a>
+                            }
+                            <a asp-action="Index" asp-route-pageNumber="@Model.Reviews.TotalPages" class="btn btn-outline-dark m-1">@Model.Reviews.TotalPages</a>
+                        }
+                            <a asp-action="Index" asp-route-pageNumber="@(Model.Reviews.PageIndex+1)" class="btn btn-outline-dark m-1 @nextDisabled"><i class="bi bi-arrow-right-short"></i></a>
+
+                    }
+                    </div>
+                    
+                </div>
+            </div>
+
+      </div>
+
+</div>
+
+
+
+<style>
+    #linkRev{
+        text-decoration:none;
+    }
+    #rev:hover{
+        box-shadow: 3px 3px 5px rgb(120,120,120);
+    }
+</style>

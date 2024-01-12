@@ -1,0 +1,60 @@
+﻿@model PaginatedList<Review>
+@foreach (var review in Model)
+{
+			<div class="d-flex m-2 p-2 border border-2 border-secondary bg-gradient bg-light bg-opacity-50">
+				<div class="image m-1 border-dark" style=" border: 3px solid; position:relative; height:63px">
+					   <img src="\Uploads\@review.User.ImagePath" width="60" height="60">
+				</div>
+				<div class="col-md-10">
+					<h4 class="d-flex align-items-center mb-0 mt-0" style="font-size:18px">
+				@review.User.Name
+				@if (review.User.Role.ToString() != "User")
+				{
+										 <sup><span class=" bg-gradient text-white m-1 mb-0 mt-0" style="border-radius: 5px; font-size: 10px; background-color: goldenrod; position:relative; top:5px; padding:3px">
+							@review.User.Role.ToString()</span></sup>
+				}    
+							<span class="text-secondary" style="font-size:16px">@review.RegDate.ToString().Substring(0,10)</span>
+					</h4>
+					<div>Оцінка: @review.Rate <span style="font-size: 20px; color:gold">★</span></div>
+					<div class="m-0 p-0 text-dark">@Html.Raw(review.ReviewDesc)</div>
+
+
+				</div>
+		@if (User.IsInRole("Admin"))
+		{
+						<div class="col-md-2 d-flex align-items-center">
+								<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@review.Id">Видалити</button>
+						</div>	
+						<!-- Delete Confirm -->
+						<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+								<form id="deleteForm" method="post" asp-area="General" asp-controller="Review" asp-action="Delete">
+
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLongTitle">Підтвердження</h5>
+								@*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>*@
+									</div>
+									<div class="modal-body">
+										Ви впевнені у видаленні даного відгуку?
+											<input name="id" asp-for="@review.Id" hidden />				
+									</div>
+									<div class="modal-footer">
+										<button id="closeBtn" type="button" class="btn btn-secondary " data-dismiss="modal">Закрити</button>
+										<button type="submit" class="btn btn-danger">Видалити</button>
+									</div>
+								</form>
+								</div>
+							</div>
+						</div>
+		}
+
+
+			</div>
+	@if (review.User.Id == Convert.ToInt32(User.FindFirst("Id")?.Value))
+	{
+		TempData["Rule"] = false;
+	}
+}

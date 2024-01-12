@@ -1,0 +1,50 @@
+
+<div class="rate-container">
+    <div class="stars">
+        <input type="radio" id="five" name="rate" value="5">
+        <label for="five"></label>
+        <input type="radio" id="four" name="rate" value="4">
+        <label for="four"></label>
+        <input type="radio" id="three" name="rate" value="3">
+        <label for="three"></label>
+        <input type="radio" id="two" name="rate" value="2">
+        <label for="two"></label>
+        <input type="radio" id="one" name="rate" value="1">
+        <label for="one"></label>
+    </div>
+</div>
+
+<style>
+    .rate-container{
+        position: absolute;
+        /*transform: translate(-50%, -50%);*/
+    }
+    .rate-container .stars{
+        text-align: center;
+    }
+    .stars input{
+        display: none;
+    }
+    .stars label{
+        float: right;
+        font-size: 40px;
+        color: rgb(165, 165, 165);
+        text-shadow: 1px 1px rgb(145, 145, 145);
+    }
+    .stars label::before{
+        content: '★';
+    }
+    .stars input:checked ~ label{
+        color: gold;
+        text-shadow: 1px 1px #c60;
+    }
+    .stars:not(:checked) > label:hover,
+    .stars:not(:checked) > label:hover ~ label{
+        color: gold;
+    }
+    .stars input:checked > label:hover,
+    .stars input:checked > label:hover ~ label{
+        color: gold;
+        text-shadow: goldenrod;
+    }
+</style>

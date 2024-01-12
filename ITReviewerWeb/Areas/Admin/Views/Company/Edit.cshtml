@@ -1,0 +1,35 @@
+﻿@model Company
+
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white">Edit Company</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<form method="post">
+		<div class="border p-3">
+			<partial name="_CompanyFormPartial" model="Model"/>
+			<button type="submit" class="btn btn-primary" style="width:150px">Edit</button>
+			<a asp-controller="Company" asp-action="Index" class="btn btn-outline-primary border form-control" style="width:150px">Back to List</a>
+
+		</div>
+		</form>
+	</div>
+</div>
+
+
+@section Scripts{
+	@{
+		<script>
+			tinymce.init({
+			  selector: 'textarea',
+			  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+			  toolbar: 'undo redo | blocks fontfamily | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+			});
+		</script>
+		<partial name="_ValidationScriptsPartial"/>
+	}
+}

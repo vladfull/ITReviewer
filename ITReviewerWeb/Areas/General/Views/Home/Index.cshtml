@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<Company>
+
+<body style="margin:0;">
+    <h1 class="text-center">Welcome to ITReviewer</h1>
+    <hr/>
+    @*<p class="text-center">Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+    <main class="m-0 p-0 d-flex align-items-stretch">
+            
+         
+        <aside class="bg-secondary bg-gradient bg-opacity-25" style="border:2px solid; border-bottom-left-radius:10px; width:15%; ">
+            <div class="p-1 bg-info bg-opacity-50 bg-gradient text-center" style="border-bottom:2px solid;"><h2>Реклама</h2></div>
+            <div class="p-2">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis consequuntur illum aut a corporis ut reiciendis optio, ducimus non corrupti animi, eos nesciunt? Maxime nulla at quaerat labore iusto cumque.</p>
+            </div>
+            
+        </aside>
+        <section class="p-1" style="border-top:2px solid; border-bottom:2px solid; width:70%;">
+            <div class="p-1 text-center"><h2>Залиште свій перший Відгук!</h2></div>
+            <form asp-action="Index">
+                <div class="input-group" >
+                    <input name="searchName" class="form-control my-0 py-1" type="text" placeholder="Search" />
+                    <span class="input-group-text" id="searchBtn">
+                        <i class="bi bi-search" aria-hidden="true"></i>
+                    </span>                    
+                </div>
+            </form>
+            
+            <div class="p-2" style="height: 400px; overflow:auto">              
+                @foreach (var company in Model)
+                {
+                    <a asp-area="General" asp-controller="Review" asp-action="Index" asp-route-id="@company.Id" style="text-decoration:none">
+                    <div class="d-flex justify-content-between m-1 p-2 border border-2 border-secondary bg-gradient bg-secondary bg-opacity-25" style="border-radius: 2px">
+                        <h4 class="text-light-emphasis"><strong>@company.Name</strong></h4>
+                            @if (@company.Rating != null)
+                            {
+                                <span class="text-primary" style="font-size:larger">@company.Rating<span style="font-size: 25px; color:gold">★</span></span>
+                            }
+                            else
+                            {
+                                <span class="text-danger" style="font-size:larger">0<span style="font-size: 25px; color:gold">★</span></span>
+                            }
+
+                    </div>
+                    </a>
+                }
+            </div>
+             
+   
+        </section>
+        <article class=" bg-secondary bg-gradient bg-opacity-25" style="border:2px solid; border-bottom-right-radius:10px; width:15%; ">
+            <div class="p-1 bg-info bg-opacity-50 bg-gradient text-center" style="border-bottom:2px solid;"><h2>Реклама</h2></div>
+            <div class="p-2">
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum voluptatem impedit praesentium doloribus sunt quaerat optio voluptas exercitationem iusto eos repellat animi voluptatum ea, est cumque sint explicabo porro reiciendis.</p>
+            </div>
+            
+        </article>
+    </main>
+</body>
+
+@section scripts{
+    <script>
+        $(function(){
+            $("#searchBtn").click(function(){
+                $("Form").submit();
+            })
+        });
+    </script>
+}
