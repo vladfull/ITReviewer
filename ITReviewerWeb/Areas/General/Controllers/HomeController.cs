@@ -16,16 +16,16 @@ namespace ITReviewerWeb.Areas.General.Controllers
 			_unitOfWork= unitOfWork;
 		}
 
-		public IActionResult Index(string? searchName)
+		public async Task<IActionResult> Index(string? searchName)
 		{
 			if(searchName == null) 
 			{
-                var objCompanyList = _unitOfWork.Company.GetAll().Result.ToList();
+                var objCompanyList = (await _unitOfWork.Company.GetAll()).ToList();
                 return View(objCompanyList);
             }
 			else
 			{
-				var objSearched = _unitOfWork.Company.GetRange(u => u.Name.Contains(searchName)).Result.ToList();
+				var objSearched = (await _unitOfWork.Company.GetRange(u => u.Name.Contains(searchName))).ToList();
 				return View(objSearched);
 			}
 		}

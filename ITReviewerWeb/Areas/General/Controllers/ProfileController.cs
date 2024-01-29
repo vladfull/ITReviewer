@@ -15,10 +15,10 @@ namespace ITReviewerWeb.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index(int? pageNumber)
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            User userFromDB = _unitOfWork.Account.Get(u => u.Name == User.Identity.Name).Result;
-            var reviewsFromDB = _unitOfWork.Review.GetRange(u => u.UserId == userFromDB.Id).Result.OrderByDescending(u => u.RegDate).ToList();
+            User userFromDB = await _unitOfWork.Account.Get(u => u.Name == User.Identity.Name);
+            var reviewsFromDB = (await _unitOfWork.Review.GetRange(u => u.UserId == userFromDB.Id)).OrderByDescending(u => u.RegDate).ToList();
             int pageSize = 5;
             var pagReviews = PaginatedList<Review>.Create(reviewsFromDB, pageNumber ?? 1, pageSize);
 			Profile_IndexVM obj = new Profile_IndexVM
@@ -33,11 +33,11 @@ namespace ITReviewerWeb.Controllers
             return View(obj);
         }
         [Authorize]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit()
         {
             if (User.Identity.IsAuthenticated)
             {
-                var userFromDB = _unitOfWork.Account.Get(u => u.Id.ToString() == User.FindFirst("Id").Value).Result;
+                var userFromDB = await _unitOfWork.Account.Get(u => u.Id.ToString() == User.FindFirst("Id").Value);
                 Profile_EditVM obj = new Profile_EditVM
                 {
                     Bio = userFromDB.Bio,
@@ -48,11 +48,11 @@ namespace ITReviewerWeb.Controllers
             return NotFound();
         }
         [HttpPost]
-        public IActionResult Edit(Profile_EditVM obj)
+        public async Task<IActionResult> Edit(Profile_EditVM obj)
         {
             if(ModelState.IsValid) 
             {
-                User userFromDB = _unitOfWork.Account.Get(u => u.Name == User.Identity.Name).Result;
+                User userFromDB = await _unitOfWork.Account.Get(u => u.Name == User.Identity.Name);
                 if(obj.ImageFile != null)
                 {
 					if (userFromDB.ImagePath != null)

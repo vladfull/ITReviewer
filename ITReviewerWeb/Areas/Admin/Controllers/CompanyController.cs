@@ -12,9 +12,9 @@ namespace ITReviewerWeb.Areas.Admin.Controllers
         {
             _unitOfWork= unitOfWork;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-			var objCompanyList = _unitOfWork.Company.GetAll().Result.ToList();
+			var objCompanyList = (await _unitOfWork.Company.GetAll()).ToList();
 			return View(objCompanyList);
         }
 
@@ -39,13 +39,13 @@ namespace ITReviewerWeb.Areas.Admin.Controllers
 			return View();
 		}
 		
-		public IActionResult Edit(int? id) 
+		public async Task<IActionResult> Edit(int? id) 
 		{
 			if (id == null | id == 0)
 			{
 				return NotFound();
 			}
-			Company? companyFromDB = _unitOfWork.Company.Get(u => u.Id == id).Result;
+			Company? companyFromDB = await _unitOfWork.Company.Get(u => u.Id == id);
 			if (companyFromDB == null)
 			{
 				return NotFound();
@@ -66,13 +66,13 @@ namespace ITReviewerWeb.Areas.Admin.Controllers
 			return View();
 		}
 
-		public IActionResult Delete(int? id)
+		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null | id == 0)
 			{
 				return NotFound();
 			}
-			Company? companyFromDB = _unitOfWork.Company.Get(u => u.Id == id).Result;
+			Company? companyFromDB = await _unitOfWork.Company.Get(u => u.Id == id);
 			if (companyFromDB == null)
 			{
 				return NotFound();
@@ -82,9 +82,9 @@ namespace ITReviewerWeb.Areas.Admin.Controllers
 		}
 		[HttpPost]
 		[ActionName("Delete")]
-		public IActionResult DeletePOST(int? id)
+		public async Task<IActionResult> DeletePOST(int? id)
 		{
-			Company? obj = _unitOfWork.Company.Get(u => u.Id == id).Result;
+			Company? obj = await _unitOfWork.Company.Get(u => u.Id == id);
 			if (obj == null)
 			{
 				return NotFound();

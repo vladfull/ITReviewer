@@ -21,7 +21,7 @@ namespace DataAccess.Repository
             _db = db;
         }
 
-		public List<Review> GetFullReview(int? id)
+		public async Task<List<Review>> GetFullReview(int? id)
 		{
             var obj = _db.Reviews.Where(r => r.CompanyId == id).Include(r => r.User).OrderByDescending(u => u.RegDate).ToList();
             return obj;

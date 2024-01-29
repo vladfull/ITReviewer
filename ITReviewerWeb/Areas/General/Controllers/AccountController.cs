@@ -29,9 +29,9 @@ namespace ITReviewerWeb.Areas.General.Controllers
 			return View();
 		}
 		[HttpPost]
-		public IActionResult Register(RegisterVM obj)
+		public async Task<IActionResult> Register(RegisterVM obj)
 		{
-			var userFromDB = _unitOfWork.Account.Get(u => u.Name == obj.Name);
+			var userFromDB = await _unitOfWork.Account.Get(u => u.Name == obj.Name);
 			if (userFromDB != null)
 			{
 				ModelState.AddModelError("Name", "Даний логін уже використовується");
@@ -46,7 +46,7 @@ namespace ITReviewerWeb.Areas.General.Controllers
 					Bio = "",
 					Role = Role.User
 				};
-				_unitOfWork.Account.Add(user);
+				await _unitOfWork.Account.Add(user);
 				_unitOfWork.Save();
 				return View("RegisterPassed");
 			}
@@ -64,7 +64,7 @@ namespace ITReviewerWeb.Areas.General.Controllers
 		{
 			if(ModelState.IsValid)
 			{
-				var userFromDB = _unitOfWork.Account.Get(u => u.Name == obj.Name).Result;
+				var userFromDB = await _unitOfWork.Account.Get(u => u.Name == obj.Name);
 				if (userFromDB == null)
 				{
 					ModelState.AddModelError("Name", "Даного логіна не знайдено");
