@@ -3,6 +3,12 @@
 This is ASP.NET MVC website "ITReviewer", which shows users reviews of different ukrainian IT companies.
 ### Why? 
 It is useful because you can see short info about the company and exactly know what to expect from it based on a large number of users reviews and whether it is worth getting a job there.
+### Tools & Technologies
+* ASP.NET Core MVC Architecture
+* Bootstrap v.5.3.2
+* MSSQL Server + EF Core
+* Repository & UnitOfWork patterns
+* Dependency Injection pattern
 ## Screenshots + explanation
 📌***Home page:***
 
